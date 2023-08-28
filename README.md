@@ -13,13 +13,15 @@ Delete
 To achieve objectives, we can change default templates used for scaffolding.  I am using Windows 11 for me default templates path for Visual Stuiod 2022 Enterprise edition is as below - 
 C:\Users\<MY USERNAME>\.nuget\packages\microsoft.visualstudio.web.codegenerators.mvc\7.0.9\Templates\ViewGenerator
 
+To use our new AdminLTE Scaffolding templates generator you will need to copy "Templates" folder from above location to your project.
+
 Note: You may need to change user name and path as per your installation.
 
 Apart from AdminLTE this also performs below additional tasks - 
 1] While generating controller it derives from BaseController, like below and also generates required constructor. You may need to change the code as per your needs.
 ![image](https://github.com/udkadam/AdminLTE-Scaffolding-DotNetCore-7/assets/306496/3ce17fbb-7e6a-4486-a9b9-8dc4cb248d1f)
 
-You may need to change context name and other things as per your needs.
+You may need to change context name and other things as per your needs. Refer - https://www.credera.com/insights/create-custom-scaffold-templates-asp-net-mvc
 
 2] For Select Control - added script to Create and Edit Views
 
