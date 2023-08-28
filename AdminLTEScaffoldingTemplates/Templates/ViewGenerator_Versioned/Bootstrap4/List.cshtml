@@ -1,0 +1,195 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @GetEnumerableTypeExpression(Model.ViewDataTypeName)
+
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+@:@@{
+    @:ViewData["Title"] = "@Model.ViewName";
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        {
+    @:Layout = "@Model.LayoutPageFile";
+        }
+@:}
+@:
+
+@:
+    }
+    else
+    {
+@:@@{
+    @:Layout = null;
+@:}
+@:
+@:<!DOCTYPE html>
+@:
+@:<html>
+@:<head>
+    @:<meta name="viewport" content="width=device-width" />
+    @:<title>@Model.ViewName</title>
+@:</head>
+@:<body>
+        //    PushIndent("    ");
+    }
+@:<p>
+    @:<a asp-action="Create">Create New</a>
+@:</p>
+
+
+@:<div class="content-wrapper" style="min-height: 1302.4px;">
+    @:<section class="content-header">
+        @:<div class="container-fluid">
+            @:<div class="row mb-2">
+                @:<div class="col-sm-6">
+                    @:<h1>@Model.ViewName</h1>
+                @:</div>
+                @:<div class="col-sm-6">
+                   
+                @:</div>
+            @:</div>
+        @:</div>
+    @:</section>
+
+
+    @:<section class="content">
+        @:<div class="container-fluid">
+            @:<div class="row">
+                @:<div class="col-lg-12">
+                    @:<div class="card">
+                        @:<div class="card-header">
+                            @:<h3 class="card-title">DataTable with default features</h3>
+                        @:</div>
+
+                        @:<div class="card-body">
+                            @:<div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">                         
+                                @:<div class="row">
+                                    @:<div class="col-sm-12">
+
+@:<table class="table table-bordered table-striped dataTable dtr-inline" aria-describedby="example1_info">
+    @:<thead>
+        @:<tr>
+        Dictionary<string, IPropertyMetadata> propertyLookup = ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+        Dictionary<string, INavigationMetadata> navigationLookup = ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x => x.AssociationPropertyName, x => x);
+
+        foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+        {
+            if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+            {
+            @:<th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending">
+                @:@@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+            @:</th>
+            }
+            else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+            {
+             @:<th class="sorting sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending">
+                @:@@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))
+             @:</th>
+            }
+        }
+            @:<th></th>
+        @:</tr>
+    @:</thead>
+    @:<tbody>
+@:@@foreach (var item in Model) {
+        @:<tr class="odd">
+        foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+        {
+            if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+            {
+            <td class="dtr-control sorting_1" tabindex="0">
+                @@Html.DisplayFor(modelItem => item.@GetValueExpression(property))
+            </td>
+            }
+            else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+            {
+            <td class="dtr-control sorting_1" tabindex="0">
+                @@Html.DisplayFor(modelItem => item.@GetValueExpression(navigation).@navigation.DisplayPropertyName)
+            </td>
+            }
+        }
+        string pkName = GetPrimaryKeyName();
+        if (pkName != null)
+        {
+            @:<td class="dtr-control sorting_1" tabindex="0">
+                @:<a asp-action="Edit" asp-route-id="@@item.@pkName">Edit</a> |
+                @:<a asp-action="Details" asp-route-id="@@item.@pkName">Details</a> |
+                @:<a asp-action="Delete" asp-route-id="@@item.@pkName">Delete</a>
+            @:</td>
+        }
+        else
+        {
+            <td class="dtr-control sorting_1" tabindex="0">
+                @@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        }
+        @:</tr>
+@:}
+    @:</tbody>
+
+@:</table>
+
+@:</div>
+                                @:</div>
+                            @:</div>
+                        @:</div>
+                    @:</div>
+                @:</div>
+            @:</div>
+        @:</div>
+    @:</section>
+@:</div>
+
+
+@:<script>
+    @:$(function () {
+        @:$(".table").DataTable({"responsive": true, "lengthChange": false, "autoWidth": false,"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');      
+    @:});
+@:</script>
+
+
+
+
+    if(!Model.IsPartialView && !Model.IsLayoutPageSelected)
+    {
+        //ClearIndent();
+@:</body>
+@:</html>
+    }
+}
+
+
+
+@functions
+{
+    string GetPrimaryKeyName()
+    {
+        return (Model.ModelMetadata.PrimaryKeys != null && Model.ModelMetadata.PrimaryKeys.Length == 1)
+        ? Model.ModelMetadata.PrimaryKeys[0].PropertyName
+        : null;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+
+    string GetEnumerableTypeExpression(string typeName)
+    {
+        return "IEnumerable<" + typeName + ">";
+    }
+}
