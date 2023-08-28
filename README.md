@@ -19,6 +19,8 @@ Apart from AdminLTE this also performs below additional tasks -
 1] While generating controller it derives from BaseController, like below and also generates required constructor. You may need to change the code as per your needs.
 ![image](https://github.com/udkadam/AdminLTE-Scaffolding-DotNetCore-7/assets/306496/3ce17fbb-7e6a-4486-a9b9-8dc4cb248d1f)
 
+You may need to change context name and other things as per your needs.
+
 2] For Select Control - added script to Create and Edit Views
 
 <script>
